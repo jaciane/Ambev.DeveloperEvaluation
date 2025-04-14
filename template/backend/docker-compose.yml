@@ -11,9 +11,14 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__DefaultConnection=Host=${DB_HOST};Port=${DB_PORT};Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}
     ports:
-      - "8080"
-      - "8081"
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      - ambev.developerevaluation.database
+      - ambev.developerevaluation.nosql
+      - ambev.developerevaluation.cache
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
@@ -23,19 +28,19 @@ services:
     image: postgres:13
 
     environment:
-      POSTGRES_DB: developer_evaluation
-      POSTGRES_USER: developer
-      POSTGRES_PASSWORD: ev@luAt10n
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
-      - "5432:5432"
+      - "${DB_PORT}:${DB_PORT}"
     restart: unless-stopped
 
   ambev.developerevaluation.nosql:
     container_name: ambev_developer_evaluation_nosql 
     image: mongo:8.0    
     environment:
-        MONGO_INITDB_ROOT_USERNAME: developer
-        MONGO_INITDB_ROOT_PASSWORD: ev@luAt10n
+        MONGO_INITDB_ROOT_USERNAME: ${NO_SQL_USER}
+        MONGO_INITDB_ROOT_PASSWORD: ${NO_SQL_PASSWORD}
     ports:
       - "27017"
 
@@ -44,7 +49,7 @@ services:
     image: redis:7.4.1-alpine     
     command: redis-server --requirepass ev@luAt10n
     environment:
-       MONGO_INITDB_ROOT_USERNAME: developer
-       MONGO_INITDB_ROOT_PASSWORD: ev@luAt10n
+       MONGO_INITDB_ROOT_USERNAME: ${CACHE_USER}
+       MONGO_INITDB_ROOT_PASSWORD: ${CACHE_PASSWORD}
     ports:
        - "6379"
