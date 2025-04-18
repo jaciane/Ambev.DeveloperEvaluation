@@ -10,7 +10,7 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.Queries.GetSale
 
             CreateMap<Sale, GetSaleResult>();
 
-            CreateMap<SaleItem, GetSaleItemDto>();
+            CreateMap<SaleItem, GetSaleItemResult>();
         }
     }
 }
