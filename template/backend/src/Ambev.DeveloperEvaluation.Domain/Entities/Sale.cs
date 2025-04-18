@@ -53,6 +53,7 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
         /// </summary>
         public decimal TotalAmount => Items.Sum(i => i.TotalPrice);
 
+
         /// <summary>
         /// Adds a new item to the sale and applies business rule discounts.
         /// </summary>
@@ -63,22 +64,15 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             Items.Add(item);
         }
 
-        /// <summary>
-        /// Cancels the sale and logs the cancellation event.
-        /// </summary>
-        public void Cancel()
-        {
-            IsCanceled = true;
-            LogEvent("SaleCanceled");
-        }
-
-        /// <summary>
-        /// Logs domain events related to the sale.
-        /// </summary>
+        ///summary
+        ///Mock a Message Broker. Publish event
+        ///</summary>
         /// <param name="eventName">The name of the event to be logged.</param>
-        private void LogEvent(string eventName)
+        public async Task PublishEventAsync(string eventName)
         {
-            Console.WriteLine($"[EVENT] {eventName} - Sale {SaleNumber}");
+            // Simulates asynchronous sending operation to the broker
+            await Task.Delay(10);
+            Console.WriteLine($"[EVENT] {eventName} - Sale ID {Id}");
         }
 
     }
