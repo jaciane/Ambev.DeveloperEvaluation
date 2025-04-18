@@ -45,6 +45,6 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.EditSale
         /// <summary>
         /// List of items included in the sale.
         /// </summary>
-        public List<CreateSaleItemResponse> Items { get; set; } = new();
+        public List<EditSaleItemResponse> Items { get; set; } = new();
     }
 }

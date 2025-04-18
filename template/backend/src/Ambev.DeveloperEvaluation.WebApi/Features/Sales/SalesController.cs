@@ -61,7 +61,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales
             {
                 return NotFound(new ApiResponse { Message = ex.Message });
             }
-            catch (Exception )
+            catch (Exception)
             {
                 return StatusCode(500, new ApiResponse { Message = "An unexpected error occurred" });
             }
@@ -148,7 +148,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales
         /// <param name="request">The updated sale data.</param>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>The updated sale details.</returns>
-        [HttpPut("{id}")]
+        [HttpPut()]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
