@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Ambev.DeveloperEvaluation.ORM.Migrations
 {
     /// <inheritdoc />
-    public partial class Sale_SaleItem_createTable : Migration
+    public partial class Sale_SaleItem_createTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,13 +33,12 @@ namespace Ambev.DeveloperEvaluation.ORM.Migrations
                 name: "SaleItems",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "text", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ProductId = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     ProductName = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
                     Quantity = table.Column<int>(type: "integer", nullable: false),
                     UnitPrice = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
                     Discount = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
-                    IsCanceled = table.Column<bool>(type: "boolean", nullable: false),
                     SaleId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
