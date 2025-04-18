@@ -143,6 +143,7 @@
   "errors": []
   }
   ```
+
 <br/>
 <div style="display: flex; justify-content: space-between;">
   <a href="./carts-api.md">Previous: Carts API</a>
