@@ -8,7 +8,9 @@ using Ambev.DeveloperEvaluation.ORM;
 using Ambev.DeveloperEvaluation.WebApi.Middleware;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32;
 using Serilog;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Ambev.DeveloperEvaluation.WebApi;
 
@@ -28,6 +30,13 @@ public class Program
 
             builder.AddBasicHealthChecks();
             builder.Services.AddSwaggerGen();
+
+            // Add the environment variables
+            builder.Configuration
+            .AddEnvironmentVariables();
+
+            //Register the connection string in DI
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
             builder.Services.AddDbContext<DefaultContext>(options =>
                 options.UseNpgsql(
