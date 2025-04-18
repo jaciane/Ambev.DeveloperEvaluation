@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+﻿using Ambev.DeveloperEvaluation.Common.Extensions;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
@@ -39,6 +40,10 @@ namespace Ambev.DeveloperEvaluation.Application.Sales.Commands.CreateSale
 
             var sale = _mapper.Map<Sale>(command);
             var createdSale = await _saleRepository.CreateAsync(sale, cancellationToken);
+
+            ///Simulate publish sale created event
+            sale.PublishEventAsync("createdSale")
+                 .FireAndForgetSafeAsync(ex => Console.WriteLine($"Erro: {ex.Message}"));
 
             return _mapper.Map<CreateSaleResult>(createdSale);
         }
