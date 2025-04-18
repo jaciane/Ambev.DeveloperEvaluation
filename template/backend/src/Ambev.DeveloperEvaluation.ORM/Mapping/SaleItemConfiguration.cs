@@ -31,9 +31,6 @@ namespace Ambev.DeveloperEvaluation.ORM.Mapping
                 .IsRequired()
                 .HasColumnType("decimal(18,2)");
 
-            builder.Property(i => i.IsCanceled)
-                .IsRequired();
-
             // Relations with Sale (via shadow property "SaleId")
             builder.Property<Guid>("SaleId"); // Shadow property to FK (if not in class)
         }
