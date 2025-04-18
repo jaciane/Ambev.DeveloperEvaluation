@@ -6,12 +6,12 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale
     /// <summary>
     /// Validator for individual sale items in the CreateSaleItemRequest.
     /// </summary>
-    public class SaleItemValidator : AbstractValidator<CreateSaleItemRequest>
+    public class CreateSaleItemValidator : AbstractValidator<CreateSaleItemRequest>
     {
         /// <summary>
         /// Initializes validation rules for a sale item.
         /// </summary>
-        public SaleItemValidator()
+        public CreateSaleItemValidator()
         {
             RuleFor(x => x.ProductId)
                 .NotEmpty().WithMessage("ProductId is required.");

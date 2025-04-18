@@ -1,9 +1,11 @@
 ﻿using Ambev.DeveloperEvaluation.Application.Sales.Commands.CreateSale;
 using Ambev.DeveloperEvaluation.Application.Sales.Commands.DeleteSale;
+using Ambev.DeveloperEvaluation.Application.Sales.Commands.EditSale;
 using Ambev.DeveloperEvaluation.Application.Sales.Queries.GetSale;
 using Ambev.DeveloperEvaluation.WebApi.Common;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.DeleteSale;
+using Ambev.DeveloperEvaluation.WebApi.Features.Sales.EditSale;
 using Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSale;
 using AutoMapper;
 using MediatR;
@@ -133,6 +135,46 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales
             catch (KeyNotFoundException ex)
             {
                 return NotFound(new ApiResponse { Message = ex.Message });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new ApiResponse { Message = "An unexpected error occurred" });
+            }
+        }
+
+        /// <summary>
+        /// Handles the update of an existing sale.
+        /// </summary>
+        /// <param name="request">The updated sale data.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>The updated sale details.</returns>
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> EditSale([FromBody] EditSaleRequest request, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var validator = new EditSaleRequestValidator();
+                var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+                if (!validationResult.IsValid)
+                    return BadRequest(validationResult.Errors);
+
+                var command = _mapper.Map<EditSaleCommand>(request);
+
+                var response = await _mediator.Send(command, cancellationToken);
+
+                if (response == null)
+                    return NotFound(new ApiResponse { Message = "Sale not found" });
+
+                return Ok(new ApiResponseWithData<EditSaleResponse>
+                {
+                    Success = true,
+                    Message = "Sale updated successfully",
+                    Data = _mapper.Map<EditSaleResponse>(response)
+                });
             }
             catch (Exception)
             {

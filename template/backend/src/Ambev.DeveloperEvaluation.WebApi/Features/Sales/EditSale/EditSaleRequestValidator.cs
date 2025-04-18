@@ -1,19 +1,22 @@
-﻿using Ambev.DeveloperEvaluation.WebApi.Features.Users.CreateUser;
+﻿using Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
 using FluentValidation;
 
-namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale
+namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.EditSale
 {
     /// <summary>
-    /// Validator for the CreateSale request.
+    /// Validator for the EditSale request.
     /// </summary>
     /// 
-    public class CreateSaleRequestValidator : AbstractValidator<CreateSaleRequest>
+    public class EditSaleRequestValidator : AbstractValidator<EditSaleRequest>
     {
         /// <summary>
         /// Initializes validation rules for creating a new sale.
         /// </summary>
-        public CreateSaleRequestValidator()
+        public EditSaleRequestValidator()
         {
+            RuleFor(x => x.Id)
+           .NotEmpty().WithMessage("Id is required.");
+
             RuleFor(x => x.CustomerId)
             .NotEmpty().WithMessage("CustomerId is required.");
 
@@ -31,7 +34,7 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale
             RuleFor(x => x.Items)
                 .NotEmpty().WithMessage("At least one item is required.");
 
-            RuleForEach(x => x.Items).SetValidator(new CreateSaleItemValidator());
+            RuleForEach(x => x.Items).SetValidator(new EditSaleItemRequestValidator());
 
         }
     }
